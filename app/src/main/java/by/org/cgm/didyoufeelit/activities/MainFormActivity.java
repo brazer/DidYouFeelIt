@@ -1,38 +1,25 @@
-package by.org.cgm.didyoufeelit;
+package by.org.cgm.didyoufeelit.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import by.org.cgm.didyoufeelit.fragments.RegistrationFragment;
-import by.org.cgm.didyoufeelit.preferences.AppPreferences;
-import by.org.cgm.didyoufeelit.utils.FragmentTags;
-import by.org.cgm.didyoufeelit.utils.FragmentUtils;
-import by.org.cgm.didyoufeelit.utils.StringUtils;
+import by.org.cgm.didyoufeelit.R;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainFormActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        boolean isRegistered =
-                AppPreferences.getInstance().getBoolean(StringUtils.IS_REGISTERED, false);
-        if (!isRegistered) showRegistrationFragment();
-    }
-
-    private void showRegistrationFragment() {
-        RegistrationFragment fragment = new RegistrationFragment();
-        FragmentUtils.addFragment(this, R.id.container, fragment, FragmentTags.REGISTRATION, false);
+        setContentView(R.layout.activity_main_form);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
