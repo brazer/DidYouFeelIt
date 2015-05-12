@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import by.org.cgm.didyoufeelit.AppCache;
 import by.org.cgm.didyoufeelit.R;
+import by.org.cgm.didyoufeelit.fragments.RegFormFragment;
 import by.org.cgm.didyoufeelit.fragments.RegistrationFragment;
 import by.org.cgm.didyoufeelit.models.RegisteredUser;
 import by.org.cgm.didyoufeelit.preferences.AppPreferences;
@@ -16,7 +18,8 @@ import by.org.cgm.didyoufeelit.utils.FragmentUtils;
 
 
 public class RegistrationActivity extends AppCompatActivity
-        implements RegistrationFragment.OnRegistrationListener {
+        implements RegFormFragment.OnRegistrationListener,
+        RegistrationFragment.OnRegistrationClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +28,18 @@ public class RegistrationActivity extends AppCompatActivity
 
         boolean isRegistered =
                 AppPreferences.getInstance().getBoolean(PreferencesKeys.IS_REGISTERED, false);
-        if (!isRegistered) showRegistrationFragment();
+        if (isRegistered) loadMainFormWithUserData();
+        else showRegistrationFragment();
+    }
+
+    private void loadMainFormWithUserData() {
+        RegisteredUser user = new RegisteredUser();
+        user.setFirstName(AppPreferences.getInstance().getString(PreferencesKeys.FIRST_NAME));
+        user.setSecondName(AppPreferences.getInstance().getString(PreferencesKeys.SECOND_NAME));
+        user.setPhone(AppPreferences.getInstance().getString(PreferencesKeys.PHONE));
+        user.setEmail(AppPreferences.getInstance().getString(PreferencesKeys.EMAIL));
+        AppCache.getInstance().setUser(user);
+        ActivityUtils.startNewActivityAndFinish(this, MainFormActivity.class);
     }
 
     private void showRegistrationFragment() {
@@ -56,6 +70,16 @@ public class RegistrationActivity extends AppCompatActivity
     }
 
     @Override
+    public void onRegistrationClick() {
+        showRegFormFragment();
+    }
+
+    private void showRegFormFragment() {
+        RegFormFragment fragment = new RegFormFragment();
+        FragmentUtils.addFragment(this, R.id.container, fragment, FragmentTags.REG_FORM, true);
+    }
+
+    @Override
     public void OnRegistrationComplete(RegisteredUser user) {
         AppPreferences.getInstance().putString(PreferencesKeys.FIRST_NAME, user.getFirstName());
         AppPreferences.getInstance().putString(PreferencesKeys.SECOND_NAME, user.getSecondName());
@@ -64,4 +88,5 @@ public class RegistrationActivity extends AppCompatActivity
         AppPreferences.getInstance().putBoolean(PreferencesKeys.IS_REGISTERED, true);
         ActivityUtils.startNewActivityAndFinish(this, MainFormActivity.class);
     }
+
 }

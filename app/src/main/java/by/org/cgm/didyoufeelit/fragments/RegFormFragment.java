@@ -1,41 +1,70 @@
 package by.org.cgm.didyoufeelit.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import by.org.cgm.didyoufeelit.R;
+import by.org.cgm.didyoufeelit.models.RegisteredUser;
 
-public class RegFormFragment extends Fragment {
+public class RegFormFragment extends Fragment implements View.OnClickListener {
+
+    private OnRegistrationListener mRegListener;
+    private EditText mEditTextFirst, mEditTextSecond, mEditTextPhone, mEditTextEmail;
+
+    public interface OnRegistrationListener {
+        void OnRegistrationComplete(RegisteredUser user);
+    }
 
     public RegFormFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_reg_form, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mEditTextFirst = (EditText) view.findViewById(R.id.editTextFirstName);
+        mEditTextSecond = (EditText) view.findViewById(R.id.editTextSecondName);
+        mEditTextPhone = (EditText) view.findViewById(R.id.editTextPhone);
+        mEditTextEmail = (EditText) view.findViewById(R.id.editTextEmail);
+        view.findViewById(R.id.buttonReg).setOnClickListener(this);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            //mListener = (OnFragmentInteractionListener) activity;
+            mRegListener = (OnRegistrationListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnRegistrationListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        //mListener = null;
+        mRegListener = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId()==R.id.buttonReg) {
+            RegisteredUser user = new RegisteredUser();
+            user.setFirstName(mEditTextFirst.getText().toString());
+            user.setSecondName(mEditTextSecond.getText().toString());
+            user.setPhone(mEditTextPhone.getText().toString());
+            user.setEmail(mEditTextEmail.getText().toString());
+            mRegListener.OnRegistrationComplete(user);
+        }
     }
 }

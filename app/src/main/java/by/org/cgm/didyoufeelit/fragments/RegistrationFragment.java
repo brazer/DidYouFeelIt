@@ -6,23 +6,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import by.org.cgm.didyoufeelit.R;
-import by.org.cgm.didyoufeelit.activities.RegistrationActivity;
-import by.org.cgm.didyoufeelit.models.RegisteredUser;
-
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class RegistrationFragment extends Fragment implements View.OnClickListener {
 
-    private OnRegistrationListener mRegListener;
-    private EditText mEditTextFirst, mEditTextSecond, mEditTextPhone, mEditTextEmail;
+    private OnRegistrationClickListener mRegListener;
 
-    public interface OnRegistrationListener {
-        void OnRegistrationComplete(RegisteredUser user);
+    public interface OnRegistrationClickListener {
+        void onRegistrationClick();
     }
 
     public RegistrationFragment() {
@@ -37,17 +32,19 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mEditTextFirst = (EditText) view.findViewById(R.id.editTextFirstName);
-        mEditTextSecond = (EditText) view.findViewById(R.id.editTextSecondName);
-        mEditTextPhone = (EditText) view.findViewById(R.id.editTextPhone);
-        mEditTextEmail = (EditText) view.findViewById(R.id.editTextEmail);
+        view.findViewById(R.id.button_registration).setOnClickListener(this);
+        view.findViewById(R.id.button_odnoklassniki).setOnClickListener(this);
+        view.findViewById(R.id.button_vkontakte).setOnClickListener(this);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof RegistrationActivity) {
-            mRegListener = (OnRegistrationListener) activity;
+        try {
+            mRegListener = (OnRegistrationClickListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnRegistrationClickListener");
         }
     }
 
@@ -59,13 +56,16 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (v.getId()==R.id.buttonReg) {
-            RegisteredUser user = new RegisteredUser();
-            user.setFirstName(mEditTextFirst.getText().toString());
-            user.setSecondName(mEditTextSecond.getText().toString());
-            user.setPhone(mEditTextPhone.getText().toString());
-            user.setEmail(mEditTextEmail.getText().toString());
-            mRegListener.OnRegistrationComplete(user);
+        switch (v.getId()) {
+            case R.id.button_registration:
+                mRegListener.onRegistrationClick();
+                break;
+            case R.id.button_vkontakte:
+                //todo:
+                break;
+            case R.id.button_odnoklassniki:
+                //todo:
+                break;
         }
     }
 }

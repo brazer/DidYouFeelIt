@@ -11,7 +11,7 @@ import lombok.Setter;
 public class AppCache {
     
     private static AppCache mAppCache;
-    @Getter @Setter private RegisteredUser mUser;
+    @Getter @Setter private RegisteredUser user;
     
     public static AppCache getInstance() {
         if (mAppCache == null) mAppCache = new AppCache();

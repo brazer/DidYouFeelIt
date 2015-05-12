@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Имя"
+            android:hint="Имя"
             android:ems="10"
             android:id="@+id/editTextFirstName"
             android:layout_alignParentTop="true"
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Фамилия"
+            android:hint="Фамилия"
             android:ems="10"
             android:id="@+id/editTextSecondName"
             android:layout_below="@+id/editTextFirstName"
@@ -40,7 +40,7 @@
             android:id="@+id/editTextPhone"
             android:layout_below="@+id/editTextSecondName"
             android:layout_centerHorizontal="true"
-            android:text="Телефон" />
+            android:hint="Телефон" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
             android:id="@+id/editTextEmail"
             android:layout_below="@+id/editTextPhone"
             android:layout_centerHorizontal="true"
-            android:text="E-mail" />
+            android:hint="E-mail" />
 
         <Button
             android:layout_width="match_parent"
