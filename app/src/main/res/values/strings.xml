@@ -1,10 +1,6 @@
 <resources>
     <string name="app_name">Did you feel it</string>
     <string name="action_settings">Настройки</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main_form">MainFormActivity</string>
-
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main_form">Основная форма</string>
+    <string name="title_activity_registration">Регистрация</string>
 </resources>

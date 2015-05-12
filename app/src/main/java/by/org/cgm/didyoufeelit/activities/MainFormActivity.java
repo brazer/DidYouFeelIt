@@ -6,6 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import by.org.cgm.didyoufeelit.R;
+import by.org.cgm.didyoufeelit.fragments.MainFormFragment;
+import by.org.cgm.didyoufeelit.utils.FragmentTags;
+import by.org.cgm.didyoufeelit.utils.FragmentUtils;
 
 
 public class MainFormActivity extends AppCompatActivity {
@@ -14,6 +17,13 @@ public class MainFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_form);
+
+        showMainFormFragment();
+    }
+
+    private void showMainFormFragment() {
+        MainFormFragment fragment = new MainFormFragment();
+        FragmentUtils.addFragment(this, R.id.main_form_container, fragment, FragmentTags.MAIN_FORM, false);
     }
 
     @Override
