@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import by.org.cgm.didyoufeelit.R;
+import by.org.cgm.didyoufeelit.activities.MainFormActivity;
 import by.org.cgm.didyoufeelit.dialogs.DatePicker;
 import by.org.cgm.didyoufeelit.dialogs.TimePicker;
 
@@ -17,8 +18,7 @@ public class MainFormFragment extends Fragment
         implements View.OnClickListener, DatePicker.OnDatePickCompleteListener,
         TimePicker.OnTimePickCompleteListener {
 
-    //private EditText mDate, mTime;
-    private TextView mDate, mTime;
+    private TextView mDate, mTime, mPlace;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +33,10 @@ public class MainFormFragment extends Fragment
         mDate.setOnClickListener(this);
         mTime = (TextView) view.findViewById(R.id.textViewTime);
         mTime.setOnClickListener(this);
+        mPlace = (TextView) view.findViewById(R.id.textViewPlace);
+        Bundle arg = getArguments();
+        if (arg!=null) mPlace.setText(arg.getString(MainFormActivity.FRAG_ARG));
+        else mPlace.setOnClickListener(this);
     }
 
     @Override
@@ -60,6 +64,9 @@ public class MainFormFragment extends Fragment
                 break;
             case R.id.textViewTime:
                 showTimePicker();
+                break;
+            case R.id.textViewPlace:
+                //todo
                 break;
         }
     }

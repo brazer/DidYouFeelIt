@@ -19,13 +19,13 @@
             android:paddingRight="@dimen/abc_text_size_body_1_material">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Дата землетрясения" />
+                android:text="Дата землетрясения:" />
 
             <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Коснитесь, чтобы ввести дату"
                     android:padding="@dimen/abc_control_padding_material"
@@ -35,15 +35,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Местное время в момент землетрясения"
+                android:text="Местное время в момент землетрясения:"
                 android:id="@+id/textView" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Коснитесь, чтобы ввести время"
                 android:padding="@dimen/abc_control_padding_material"
                 android:id="@+id/textViewTime" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Местоположение события:"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Коснитесь, чтобы ввести место"
+                android:padding="@dimen/abc_control_padding_material"
+                android:id="@+id/textViewPlace" />
 
         </LinearLayout>
     </ScrollView>
