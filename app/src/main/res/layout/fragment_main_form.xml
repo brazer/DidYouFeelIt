@@ -25,11 +25,11 @@
                 android:text="Дата землетрясения:" />
 
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Коснитесь, чтобы ввести дату"
-                    android:padding="@dimen/abc_control_padding_material"
-                    android:id="@+id/textViewDate" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Коснитесь, чтобы ввести дату"
+                android:padding="@dimen/abc_control_padding_material"
+                android:id="@+id/textViewDate" />
 
             <TextView
                 android:layout_width="wrap_content"

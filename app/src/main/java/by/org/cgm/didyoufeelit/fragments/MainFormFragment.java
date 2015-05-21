@@ -1,24 +1,35 @@
 package by.org.cgm.didyoufeelit.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
 import by.org.cgm.didyoufeelit.R;
 import by.org.cgm.didyoufeelit.activities.MainFormActivity;
 import by.org.cgm.didyoufeelit.dialogs.DatePicker;
 import by.org.cgm.didyoufeelit.dialogs.TimePicker;
+import by.org.cgm.didyoufeelit.utils.StringUtils;
 
 
 public class MainFormFragment extends Fragment
         implements View.OnClickListener, DatePicker.OnDatePickCompleteListener,
         TimePicker.OnTimePickCompleteListener {
 
+    public interface OnPlacePickListener {
+        void onPlacePick();
+    }
+
     private TextView mDate, mTime, mPlace;
+    private OnPlacePickListener onPlacePickListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,17 +54,17 @@ public class MainFormFragment extends Fragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            //mRegListener = (OnRegistrationListener) activity;
+            onPlacePickListener = (OnPlacePickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnRegistrationListener");
+                    + " must implement onPlacePickListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        //mRegListener = null;
+        onPlacePickListener = null;
     }
 
     @Override
@@ -66,7 +77,7 @@ public class MainFormFragment extends Fragment
                 showTimePicker();
                 break;
             case R.id.textViewPlace:
-                //todo
+                showPlacePicker();
                 break;
         }
     }
@@ -92,4 +103,26 @@ public class MainFormFragment extends Fragment
     public void onTimePickComplete(String time) {
         mTime.setText(time);
     }
+
+    private void showPlacePicker() {
+        onPlacePickListener.onPlacePick();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == MainFormActivity.PLACE_PICKER_REQUEST && resultCode == Activity.RESULT_OK)
+            displayPlace(PlacePicker.getPlace(data, getActivity()));
+    }
+
+    private void displayPlace(Place place) {
+        if (place==null) return;
+        String content = "";
+        if (!TextUtils.isEmpty(place.getAddress())) content += "Адрес: " + place.getAddress() + "\n";
+        if (place.getLatLng()!=null) {
+            content += "Долгота: " + StringUtils.round(place.getLatLng().longitude, 2) + "\n";
+            content += "Широта: " + StringUtils.round(place.getLatLng().latitude, 2) + "\n";
+        }
+        mPlace.setText(content);
+    }
+
 }

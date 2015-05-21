@@ -3,4 +3,8 @@
     <string name="action_settings">Настройки</string>
     <string name="title_activity_main_form">Основная форма</string>
     <string name="title_activity_registration">Регистрация</string>
+    <string name="google_api_key">AIzaSyD2ij_FFJfP3Ok-hU3rkQhXZl9yEDdoqB4</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
