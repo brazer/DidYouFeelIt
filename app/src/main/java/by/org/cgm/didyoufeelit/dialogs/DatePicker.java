@@ -13,6 +13,7 @@ import lombok.Setter;
  * Author: Anatol Salanevich
  * Date: 12.05.2015
  */
+@Deprecated
 public class DatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     public interface OnDatePickCompleteListener {

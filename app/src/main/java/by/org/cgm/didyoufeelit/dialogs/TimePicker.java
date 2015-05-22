@@ -13,6 +13,7 @@ import lombok.Setter;
  * Author: Anatol Salanevich
  * Date: 12.05.2015
  */
+@Deprecated
 public class TimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     public interface OnTimePickCompleteListener {

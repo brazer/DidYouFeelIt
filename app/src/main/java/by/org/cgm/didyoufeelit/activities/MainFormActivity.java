@@ -22,19 +22,26 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import by.org.cgm.didyoufeelit.R;
 import by.org.cgm.didyoufeelit.fragments.DateFragment;
 import by.org.cgm.didyoufeelit.fragments.MainFormFragment;
+import by.org.cgm.didyoufeelit.fragments.PlaceFragment;
 import by.org.cgm.didyoufeelit.fragments.TimeFragment;
+import by.org.cgm.didyoufeelit.listeners.OnNavigationListener;
 import by.org.cgm.didyoufeelit.utils.FragmentTags;
 import by.org.cgm.didyoufeelit.utils.FragmentUtils;
+import by.org.cgm.didyoufeelit.utils.StringUtils;
 
 
 public class MainFormActivity extends AppCompatActivity
     implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        OnNavigationListener, ViewPager.OnPageChangeListener,
         MainFormFragment.OnPlacePickListener {
 
     public static final int PLACE_PICKER_REQUEST = 1983;
     private final String LOG_TAG = MainFormActivity.class.getSimpleName();
     public final static String FRAG_ARG = "location";
     private GoogleApiClient mGoogleApiClient;
+    private ViewPager mViewPager;
+    private CustomPagerAdapter mAdapter;
+    private int mCurrentPagePosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +56,10 @@ public class MainFormActivity extends AppCompatActivity
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mAdapter = new CustomPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setOnPageChangeListener(this);
         //buildGoogleApiClient();
     }
 
@@ -154,9 +162,45 @@ public class MainFormActivity extends AppCompatActivity
         if (fragment!=null) fragment.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onNavigatePage(int position) {
+        mViewPager.setCurrentItem(position, true);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Log.d(LOG_TAG, "onPageSelected: " + position);
+        switch (mCurrentPagePosition) {
+            case PagePosition.DATE:
+                ((DateFragment) mAdapter.getItem(PagePosition.DATE)).setDateInData();
+                break;
+            case PagePosition.TIME:
+                ((TimeFragment) mAdapter.getItem(PagePosition.TIME)).setTimeInData();
+                break;
+        }
+        mCurrentPagePosition = position;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    public class PagePosition {
+        public static final int DATE = 0;
+        public static final int TIME = 1;
+        public static final int PLACE = 2;
+    }
+
     private class CustomPagerAdapter extends FragmentPagerAdapter {
 
-        private final int NUM_PAGES = 2;
+        private final int NUM_PAGES = 3;
+
 
         public CustomPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -164,9 +208,14 @@ public class MainFormActivity extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
-            if (position==0) return new DateFragment();
-            if (position==1) return new TimeFragment();
-            return null;
+            Fragment fragment = null;
+            if (position== PagePosition.DATE) fragment = new DateFragment();
+            if (position== PagePosition.TIME) fragment = new TimeFragment();
+            if (position== PagePosition.PLACE) fragment = new PlaceFragment();
+            Bundle arg = new Bundle();
+            arg.putInt(StringUtils.PAGE_POSITION, position);
+            if (fragment != null) fragment.setArguments(arg);
+            return fragment;
         }
 
         @Override

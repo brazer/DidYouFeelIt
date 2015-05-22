@@ -1,12 +1,35 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="by.org.cgm.didyoufeelit.fragments.DateFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Дата землетрясения"
+        android:layout_gravity="center_horizontal|top" />
 
     <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/datePicker"
         android:layout_gravity="center" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Следующий"
+        android:id="@+id/btnNext"
+        android:layout_gravity="right|bottom" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Страница 1"
+        android:layout_gravity="center_horizontal|bottom" />
 
 </FrameLayout>
