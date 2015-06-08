@@ -144,8 +144,6 @@ public class ShakeDetector implements SensorEventListener {
         public void add(long timestamp, boolean accelerating) {
             // Purge samples that proceed window.
             purge(timestamp - MAX_WINDOW_SIZE);
-
-
             // Add the sample to the queue.
             Sample added = pool.acquire();
             added.timestamp = timestamp;
@@ -158,8 +156,6 @@ public class ShakeDetector implements SensorEventListener {
             if (oldest == null) {
                 oldest = added;
             }
-
-
             // Update running average.
             sampleCount++;
             if (accelerating) {
@@ -185,16 +181,11 @@ public class ShakeDetector implements SensorEventListener {
                     && oldest != null && cutoff - oldest.timestamp > 0) {
                 // Remove sample.
                 Sample removed = oldest;
-                if (removed.accelerating) {
-                    acceleratingCount--;
-                }
+                if (removed.accelerating) acceleratingCount--;
                 sampleCount--;
 
-
                 oldest = removed.next;
-                if (oldest == null) {
-                    newest = null;
-                }
+                if (oldest == null) newest = null;
                 pool.release(removed);
             }
         }
@@ -230,9 +221,8 @@ public class ShakeDetector implements SensorEventListener {
         /** Acquires a sample from the pool. */
         Sample acquire() {
             Sample acquired = head;
-            if (acquired == null) {
-                acquired = new Sample();
-            } else {
+            if (acquired == null) acquired = new Sample();
+            else {
                 // Remove instance from pool.
                 head = acquired.next;
             }

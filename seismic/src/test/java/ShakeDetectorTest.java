@@ -23,7 +23,6 @@ public class ShakeDetectorTest {
     @Test public void testInitialShaking() {
         SampleQueue q = new SampleQueue();
         assertFalse(q.isShaking());
-        //assertThat(q.isShaking()).isFalse();
     }
 
     /** Tests LG Ally sample rate. */
@@ -41,30 +40,25 @@ public class ShakeDetectorTest {
         q.add(1900000000L, false);
         assertContent(q, false, false, false, false);
         assertFalse(q.isShaking());
-        //assertThat(q.isShaking()).isFalse();
 
         // The oldest two entries will be removed.
         q.add(2200000000L, true);
         q.add(2500000000L, true);
         assertContent(q, false, false, true, true);
         assertFalse(q.isShaking());
-        //assertThat(q.isShaking()).isFalse();
 
         // Another entry should be removed, now 3 out of 4 are true.
         q.add(2800000000L, true);
         assertContent(q, false, true, true, true);
         assertTrue(q.isShaking());
-        //assertThat(q.isShaking()).isTrue();
 
         q.add(3100000000L, false);
         assertContent(q, true, true, true, false);
         assertTrue(q.isShaking());
-        //assertThat(q.isShaking()).isTrue();
 
         q.add(3400000000L, false);
         assertContent(q, true, true, false, false);
         assertFalse(q.isShaking());
-        //assertThat(q.isShaking()).isFalse();
     }
 
     private void assertContent(SampleQueue q, boolean... expected) {
@@ -75,10 +69,8 @@ public class ShakeDetectorTest {
             sb.append(String.format("[%b,%d] ", s.accelerating, s.timestamp));
         }
 
-        //assertThat(samples).hasSize(expected.length);
         assertEquals(expected.length, samples.size());
         for (int i = 0; i < expected.length; i++) {
-            //assertThat(samples.get(i).accelerating).isEqualTo(expected[i]);
             assertEquals(expected[i], samples.get(i).accelerating);
         }
     }
@@ -88,10 +80,8 @@ public class ShakeDetectorTest {
         q.add(1000000000L, true);
         q.add(1200000000L, true);
         q.add(1400000000L, true);
-        //assertThat(q.isShaking()).isTrue();
         assertTrue(q.isShaking());
         q.clear();
-        //assertThat(q.isShaking()).isFalse();
         assertFalse(q.isShaking());
     }
 }

@@ -28,6 +28,7 @@
             android:name=".activities.MainFormActivity"
             android:label="@string/title_activity_main_form" >
         </activity>
+        <service android:name=".SeismicService" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key" />

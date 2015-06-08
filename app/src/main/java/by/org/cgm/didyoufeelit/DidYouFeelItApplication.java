@@ -2,6 +2,7 @@ package by.org.cgm.didyoufeelit;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 
 import com.squareup.leakcanary.LeakCanary;
 
@@ -21,6 +22,7 @@ public class DidYouFeelItApplication extends Application {
     public void onCreate() {
         super.onCreate();
         LeakCanary.install(this);
+        startService(new Intent(this, SeismicService.class));
     }
 
     public static Context getContext() {

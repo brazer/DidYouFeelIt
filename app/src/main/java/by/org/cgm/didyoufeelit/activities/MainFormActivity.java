@@ -29,7 +29,6 @@ import by.org.cgm.didyoufeelit.utils.FragmentTags;
 import by.org.cgm.didyoufeelit.utils.FragmentUtils;
 import by.org.cgm.didyoufeelit.utils.StringUtils;
 
-
 public class MainFormActivity extends AppCompatActivity
     implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         OnNavigationListener, ViewPager.OnPageChangeListener,
@@ -56,6 +55,7 @@ public class MainFormActivity extends AppCompatActivity
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
+
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mAdapter = new CustomPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
