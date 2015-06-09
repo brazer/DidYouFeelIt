@@ -1,12 +1,24 @@
 package by.org.cgm.didyoufeelit;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import by.org.cgm.didyoufeelit.utils.StringUtils;
 import by.org.cgm.seismic.ShakeDetector;
 
 /**
@@ -17,6 +29,10 @@ public class SeismicService extends Service implements ShakeDetector.Listener {
 
     private final String LOG_TAG = SeismicService.class.getSimpleName();
     private ShakeDetector shakeDetector = new ShakeDetector(this);
+    private final int EVENTS_AMOUNT = 20;
+    private final Gson gson = new Gson();
+    private final Type collectionType = new TypeToken<ArrayList<ShakeEvent>>(){}.getType();
+    public static final String EVENTS_FILE = "events.json";
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -39,7 +55,64 @@ public class SeismicService extends Service implements ShakeDetector.Listener {
     @Override
     public void hearShake() {
         Log.d(LOG_TAG, "SHAKE!");
-        Toast.makeText(getApplicationContext(), "Shake", Toast.LENGTH_SHORT).show();
+        ShakeEvent event = new ShakeEvent();
+        event.time = getTime(Calendar.getInstance());
+        event.date = getDate(Calendar.getInstance());
+        String json = readJson(EVENTS_FILE);
+        ArrayList<ShakeEvent> events = getEvents(json);
+        if (events.size()==EVENTS_AMOUNT) events.remove(0);
+        events.add(event);
+        json = convertToJson(events);
+        writeJson(json, EVENTS_FILE);
+    }
+
+    private String getDate(Calendar c) {
+        return "" + StringUtils.getDoubleDigits(c.get(Calendar.DAY_OF_MONTH)) +
+                '.' + StringUtils.getDoubleDigits(c.get(Calendar.MONTH)) +
+                '.' + c.get(Calendar.YEAR) + " г.";
+    }
+
+    private String getTime(Calendar c) {
+        return "" + StringUtils.getDoubleDigits(c.get(Calendar.HOUR_OF_DAY)) + ':' +
+                StringUtils.getDoubleDigits(c.get(Calendar.MINUTE));
+    }
+
+    private String readJson(String filename) {
+        try {
+            File file = new File(getApplicationContext().getFilesDir(), filename);
+            if (file.createNewFile()) return "";
+            InputStream stream = openFileInput(filename);
+            if (stream.available()==0) return "";
+            byte[] reader = new byte[stream.available()];
+            while (stream.read(reader)!=-1) ;
+            return new String(reader);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "readJson", e);
+            return "";
+        }
+    }
+
+    private ArrayList<ShakeEvent> getEvents(String json) {
+        if (json.equals("")) return new ArrayList<>();
+        return gson.fromJson(json, collectionType);
+    }
+
+    private void writeJson(String json, String filename) {
+        try {
+            OutputStream stream = openFileOutput(filename, Context.MODE_PRIVATE);
+            stream.write(json.getBytes());
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "writeJson", e);
+        }
+    }
+
+    private String convertToJson(ArrayList<ShakeEvent> events) {
+        return gson.toJson(events, collectionType);
+    }
+
+    class ShakeEvent {
+        public String date;
+        public String time;
     }
 
 }
