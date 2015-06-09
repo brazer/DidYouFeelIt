@@ -28,18 +28,19 @@ public class RegistrationActivity extends AppCompatActivity
 
         boolean isRegistered =
                 AppPreferences.getInstance().getBoolean(PreferencesKeys.IS_REGISTERED, false);
-        if (isRegistered) loadMainFormWithUserData();
+        if (isRegistered) loadNextActivityWithUserData();
         else showRegistrationFragment();
     }
 
-    private void loadMainFormWithUserData() {
+    private void loadNextActivityWithUserData() {
         RegisteredUser user = new RegisteredUser();
         user.setFirstName(AppPreferences.getInstance().getString(PreferencesKeys.FIRST_NAME));
         user.setSecondName(AppPreferences.getInstance().getString(PreferencesKeys.SECOND_NAME));
         user.setPhone(AppPreferences.getInstance().getString(PreferencesKeys.PHONE));
         user.setEmail(AppPreferences.getInstance().getString(PreferencesKeys.EMAIL));
         AppCache.getInstance().setUser(user);
-        ActivityUtils.startNewActivityAndFinish(this, MainFormActivity.class);
+        //ActivityUtils.startNewActivityAndFinish(this, MainFormActivity.class);
+        ActivityUtils.startNewActivityAndFinish(this, EventListActivity.class);
     }
 
     private void showRegistrationFragment() {
@@ -86,7 +87,8 @@ public class RegistrationActivity extends AppCompatActivity
         AppPreferences.getInstance().putString(PreferencesKeys.PHONE, user.getPhone());
         AppPreferences.getInstance().putString(PreferencesKeys.EMAIL, user.getEmail());
         AppPreferences.getInstance().putBoolean(PreferencesKeys.IS_REGISTERED, true);
-        ActivityUtils.startNewActivityAndFinish(this, MainFormActivity.class);
+        //ActivityUtils.startNewActivityAndFinish(this, MainFormActivity.class);
+        ActivityUtils.startNewActivityAndFinish(this, EventListActivity.class);
     }
 
 }
