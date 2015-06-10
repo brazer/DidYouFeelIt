@@ -8,6 +8,8 @@ public class StringUtils {
 
     public final static String EMPTY = "";
     public final static String PAGE_POSITION = "page_number";
+    public static final String EVENTS_FILE = "events.json";
+    public static final String LIST_KEY = "list";
 
     public static String round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();

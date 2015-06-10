@@ -15,7 +15,7 @@ public class AppCache {
     @Getter @Setter private RegisteredUser user;
     @Getter private Data data;
 
-    public AppCache() {
+    private AppCache() {
         data = new Data();
     }
 

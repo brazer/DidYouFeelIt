@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import by.org.cgm.didyoufeelit.R;
+import by.org.cgm.didyoufeelit.models.EventList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +37,13 @@ public class EventListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new String[]{"One", "Two"});
+
+        String[] list = EventList.getInstance(getActivity()).getList();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                getActivity(),
+                android.R.layout.simple_list_item_1,
+                list
+        );
         ((ListView) view.findViewById(R.id.listView)).setAdapter(adapter);
     }
 

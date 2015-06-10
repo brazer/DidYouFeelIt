@@ -9,6 +9,7 @@ import by.org.cgm.didyoufeelit.AppCache;
 import by.org.cgm.didyoufeelit.R;
 import by.org.cgm.didyoufeelit.fragments.RegFormFragment;
 import by.org.cgm.didyoufeelit.fragments.RegistrationFragment;
+import by.org.cgm.didyoufeelit.models.EventList;
 import by.org.cgm.didyoufeelit.models.RegisteredUser;
 import by.org.cgm.didyoufeelit.preferences.AppPreferences;
 import by.org.cgm.didyoufeelit.preferences.PreferencesKeys;
@@ -39,8 +40,7 @@ public class RegistrationActivity extends AppCompatActivity
         user.setPhone(AppPreferences.getInstance().getString(PreferencesKeys.PHONE));
         user.setEmail(AppPreferences.getInstance().getString(PreferencesKeys.EMAIL));
         AppCache.getInstance().setUser(user);
-        //ActivityUtils.startNewActivityAndFinish(this, MainFormActivity.class);
-        ActivityUtils.startNewActivityAndFinish(this, EventListActivity.class);
+        showNextActivity();
     }
 
     private void showRegistrationFragment() {
@@ -87,8 +87,13 @@ public class RegistrationActivity extends AppCompatActivity
         AppPreferences.getInstance().putString(PreferencesKeys.PHONE, user.getPhone());
         AppPreferences.getInstance().putString(PreferencesKeys.EMAIL, user.getEmail());
         AppPreferences.getInstance().putBoolean(PreferencesKeys.IS_REGISTERED, true);
-        //ActivityUtils.startNewActivityAndFinish(this, MainFormActivity.class);
-        ActivityUtils.startNewActivityAndFinish(this, EventListActivity.class);
+        showNextActivity();
+    }
+
+    private void showNextActivity() {
+        if (EventList.getInstance(this).isEmpty())
+            ActivityUtils.startNewActivityAndFinish(this, MainFormActivity.class);
+        else ActivityUtils.startNewActivityAndFinish(this, EventListActivity.class);
     }
 
 }

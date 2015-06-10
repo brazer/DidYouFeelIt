@@ -32,7 +32,6 @@ public class SeismicService extends Service implements ShakeDetector.Listener {
     private final int EVENTS_AMOUNT = 20;
     private final Gson gson = new Gson();
     private final Type collectionType = new TypeToken<ArrayList<ShakeEvent>>(){}.getType();
-    public static final String EVENTS_FILE = "events.json";
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -58,12 +57,10 @@ public class SeismicService extends Service implements ShakeDetector.Listener {
         ShakeEvent event = new ShakeEvent();
         event.time = getTime(Calendar.getInstance());
         event.date = getDate(Calendar.getInstance());
-        String json = readJson(EVENTS_FILE);
-        ArrayList<ShakeEvent> events = getEvents(json);
+        ArrayList<ShakeEvent> events = getEvents();
         if (events.size()==EVENTS_AMOUNT) events.remove(0);
         events.add(event);
-        json = convertToJson(events);
-        writeJson(json, EVENTS_FILE);
+        writeJson(convertToJson(events), StringUtils.EVENTS_FILE);
     }
 
     private String getDate(Calendar c) {
@@ -75,6 +72,10 @@ public class SeismicService extends Service implements ShakeDetector.Listener {
     private String getTime(Calendar c) {
         return "" + StringUtils.getDoubleDigits(c.get(Calendar.HOUR_OF_DAY)) + ':' +
                 StringUtils.getDoubleDigits(c.get(Calendar.MINUTE));
+    }
+
+    public ArrayList<ShakeEvent> getEvents() {
+        return getEvents(readJson(StringUtils.EVENTS_FILE));
     }
 
     private String readJson(String filename) {
@@ -110,7 +111,7 @@ public class SeismicService extends Service implements ShakeDetector.Listener {
         return gson.toJson(events, collectionType);
     }
 
-    class ShakeEvent {
+    public class ShakeEvent {
         public String date;
         public String time;
     }
