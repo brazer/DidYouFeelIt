@@ -43,6 +43,10 @@
             android:name=".activities.EventListActivity"
             android:label="@string/title_activity_event_list" >
         </activity>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>

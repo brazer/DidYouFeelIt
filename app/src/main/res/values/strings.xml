@@ -10,4 +10,6 @@
     <string name="title_activity_event_list">Список событий</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="detector_enabled">detector_checkbox</string>
+    <string name="notification_enabled">notification_checkbox</string>
 </resources>

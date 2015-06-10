@@ -1,5 +1,6 @@
 package by.org.cgm.didyoufeelit.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -7,7 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import by.org.cgm.didyoufeelit.R;
+import by.org.cgm.didyoufeelit.SeismicService;
 import by.org.cgm.didyoufeelit.fragments.EventListFragment;
+import by.org.cgm.didyoufeelit.preferences.AppPreferences;
 import by.org.cgm.didyoufeelit.utils.ActivityUtils;
 import by.org.cgm.didyoufeelit.utils.FragmentTags;
 import by.org.cgm.didyoufeelit.utils.FragmentUtils;
@@ -21,6 +24,7 @@ public class EventListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
+
         FragmentUtils.addFragment(
                 this,
                 R.id.event_list_container,
@@ -28,6 +32,14 @@ public class EventListActivity extends AppCompatActivity
                 FragmentTags.EVENT_LIST,
                 false
         );
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        boolean detectorEnabled =
+                AppPreferences.getInstance().getBoolean(getString(R.string.detector_enabled), true);
+        if (detectorEnabled) startService(new Intent(getApplicationContext(), SeismicService.class));
     }
 
     @Override
@@ -46,6 +58,7 @@ public class EventListActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            ActivityUtils.startNewActivity(this, SettingsActivity.class);
             return true;
         }
 

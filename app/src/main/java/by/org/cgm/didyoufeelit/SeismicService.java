@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -18,6 +19,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import by.org.cgm.didyoufeelit.preferences.AppPreferences;
 import by.org.cgm.didyoufeelit.utils.StringUtils;
 import by.org.cgm.seismic.ShakeDetector;
 
@@ -61,6 +63,10 @@ public class SeismicService extends Service implements ShakeDetector.Listener {
         if (events.size()==EVENTS_AMOUNT) events.remove(0);
         events.add(event);
         writeJson(convertToJson(events), StringUtils.EVENTS_FILE);
+        boolean notificationEnabled =
+                AppPreferences.getInstance().getBoolean(getString(R.string.notification_enabled), false);
+        if (notificationEnabled) //todo: push notification
+            Toast.makeText(this, "Зафиксированы толчки", Toast.LENGTH_SHORT).show();
     }
 
     private String getDate(Calendar c) {
