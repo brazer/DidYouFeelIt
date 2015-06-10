@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import by.org.cgm.didyoufeelit.SeismicService;
 import by.org.cgm.didyoufeelit.utils.StringUtils;
+import lombok.Getter;
 
 /**
  * Author: Anatol Salanevich
@@ -23,6 +24,7 @@ import by.org.cgm.didyoufeelit.utils.StringUtils;
 public class EventList {
 
     private static final String LOG_TAG = EventList.class.getSimpleName();
+    @Getter private static ArrayList<SeismicService.ShakeEvent> events;
     private static EventList eventList;
     private Context mContext;
 
@@ -36,19 +38,19 @@ public class EventList {
     }
 
     public boolean isEmpty() {
-        return getEvents().size() == 0;
+        return getShakeEvents().size() == 0;
     }
 
     public String[] getList() {
-        ArrayList<SeismicService.ShakeEvent> events = getEvents();
+        events = getShakeEvents();
         String list[] = new String[events.size()];
         for (int i=0; i<events.size(); i++)
             list[i] = events.get(i).date + " " + events.get(i).time;
         return list;
     }
 
-    private ArrayList<SeismicService.ShakeEvent> getEvents() {
-        return getEvents(readJson(StringUtils.EVENTS_FILE));
+    private ArrayList<SeismicService.ShakeEvent> getShakeEvents() {
+        return getShakeEvents(readJson(StringUtils.EVENTS_FILE));
     }
 
     private String readJson(String filename) {
@@ -66,7 +68,7 @@ public class EventList {
         }
     }
 
-    private ArrayList<SeismicService.ShakeEvent> getEvents(String json) {
+    private ArrayList<SeismicService.ShakeEvent> getShakeEvents(String json) {
         if (json.equals("")) return new ArrayList<>();
         Gson gson = new Gson();
         Type collectionType = new TypeToken<ArrayList<SeismicService.ShakeEvent>>(){}.getType();

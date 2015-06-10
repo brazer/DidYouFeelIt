@@ -1,12 +1,12 @@
 package by.org.cgm.didyoufeelit.fragments;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -16,12 +16,13 @@ import by.org.cgm.didyoufeelit.models.EventList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EventListFragment.OnFragmentInteractionListener} interface
+ * {@link OnClickListener} interface
  * to handle interaction events.
  */
-public class EventListFragment extends Fragment {
+public class EventListFragment extends Fragment implements View.OnClickListener,
+        ListView.OnItemClickListener {
 
-    private OnFragmentInteractionListener mListener;
+    private OnClickListener mListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,24 +45,37 @@ public class EventListFragment extends Fragment {
                 android.R.layout.simple_list_item_1,
                 list
         );
-        ((ListView) view.findViewById(R.id.listView)).setAdapter(adapter);
+        ListView listView = (ListView) view.findViewById(R.id.listView);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
+        view.findViewById(R.id.button_form_message).setOnClickListener(this);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            //mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnClickListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        //mListener = null;
+        mListener = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId()==R.id.button_form_message) mListener.onFormAndSendMessageClick();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        mListener.onFormAndSendMessageClick(position);
     }
 
     /**
@@ -74,9 +88,9 @@ public class EventListFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+    public interface OnClickListener {
+        void onFormAndSendMessageClick();
+        void onFormAndSendMessageClick(int position);
     }
 
 }

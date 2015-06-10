@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import by.org.cgm.didyoufeelit.AppCache;
 import by.org.cgm.didyoufeelit.R;
@@ -91,9 +92,9 @@ public class RegistrationActivity extends AppCompatActivity
     }
 
     private void showNextActivity() {
-        if (EventList.getInstance(this).isEmpty())
-            ActivityUtils.startNewActivityAndFinish(this, MainFormActivity.class);
-        else ActivityUtils.startNewActivityAndFinish(this, EventListActivity.class);
+        if (EventList.getInstance(getApplicationContext()).isEmpty())
+            Toast.makeText(this, "Список событий пуст", Toast.LENGTH_LONG).show();
+        ActivityUtils.startNewActivityAndFinish(this, EventListActivity.class);
     }
 
 }
