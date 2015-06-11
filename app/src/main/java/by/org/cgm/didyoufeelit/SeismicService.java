@@ -78,7 +78,7 @@ public class SeismicService extends Service implements ShakeDetector.Listener {
     private String getTime(Calendar c) {
         return "" + StringUtils.getDoubleDigits(c.get(Calendar.HOUR_OF_DAY)) + ':' +
                 StringUtils.getDoubleDigits(c.get(Calendar.MINUTE)) + ':' +
-                StringUtils.getDoubleDigits(Calendar.SECOND);
+                StringUtils.getDoubleDigits(c.get(Calendar.SECOND));
     }
 
     public ArrayList<ShakeEvent> getEvents() {
