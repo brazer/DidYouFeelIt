@@ -40,6 +40,7 @@ public class EventListActivity extends AppCompatActivity
         boolean detectorEnabled =
                 AppPreferences.getInstance().getBoolean(getString(R.string.detector_enabled), true);
         if (detectorEnabled) startService(new Intent(getApplicationContext(), SeismicService.class));
+        else stopService(new Intent(getApplicationContext(), SeismicService.class));
     }
 
     @Override

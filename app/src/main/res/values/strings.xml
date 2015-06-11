@@ -12,4 +12,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="detector_enabled">detector_checkbox</string>
     <string name="notification_enabled">notification_checkbox</string>
+    <string name="first_name">first_name</string>
+    <string name="second_name">second_name</string>
+    <string name="phone">phone</string>
+    <string name="email">email</string>
 </resources>
