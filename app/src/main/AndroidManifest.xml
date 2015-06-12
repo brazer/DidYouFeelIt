@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="by.org.cgm.didyoufeelit" >
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -21,13 +24,20 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.MainFormActivity"
             android:label="@string/title_activity_main_form" >
+        </activity>
+        <activity
+            android:name=".activities.EventListActivity"
+            android:label="@string/title_activity_event_list" >
+        </activity>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
 
         <service android:name=".SeismicService" />
@@ -38,15 +48,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <activity
-            android:name=".activities.EventListActivity"
-            android:label="@string/title_activity_event_list" >
-        </activity>
-        <activity
-            android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
     </application>
 
 </manifest>

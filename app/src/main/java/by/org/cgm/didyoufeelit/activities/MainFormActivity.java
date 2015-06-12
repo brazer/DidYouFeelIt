@@ -8,8 +8,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -98,28 +96,6 @@ public class MainFormActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onConnected(Bundle bundle) {
         /*Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastLocation != null) {
@@ -181,6 +157,9 @@ public class MainFormActivity extends AppCompatActivity
                 break;
             case PagePosition.TIME:
                 ((TimeFragment) mAdapter.getItem(PagePosition.TIME)).setTimeInData();
+                break;
+            case PagePosition.PLACE:
+                ((PlaceFragment) mAdapter.getItem(PagePosition.PLACE)).setPlaceInData();
                 break;
         }
         mCurrentPagePosition = position;

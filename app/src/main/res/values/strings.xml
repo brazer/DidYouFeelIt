@@ -5,8 +5,7 @@
     <string name="title_activity_registration">Регистрация</string>
     <string name="google_api_key">AIzaSyD2ij_FFJfP3Ok-hU3rkQhXZl9yEDdoqB4</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pick_place_fragment">Укажите место события</string>
     <string name="title_activity_event_list">Список событий</string>
 
     <string name="hello_world">Hello world!</string>

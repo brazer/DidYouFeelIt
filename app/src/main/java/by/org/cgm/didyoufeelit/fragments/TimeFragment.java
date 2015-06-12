@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TimePicker;
 
+import java.util.Calendar;
+
 import by.org.cgm.didyoufeelit.AppCache;
 import by.org.cgm.didyoufeelit.R;
 import by.org.cgm.didyoufeelit.listeners.OnNavigationListener;
@@ -22,7 +24,7 @@ import by.org.cgm.didyoufeelit.utils.StringUtils;
 public class TimeFragment extends Fragment implements View.OnClickListener {
 
     private OnNavigationListener mListener;
-    private static TimePicker mTimePicker;
+    private TimePicker mTimePicker;
     private int position;
 
     @Override
@@ -38,6 +40,7 @@ public class TimeFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         mTimePicker = (TimePicker) view.findViewById(R.id.timePicker);
         mTimePicker.setIs24HourView(true);
+        mTimePicker.setCurrentHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
         view.findViewById(R.id.btnNext).setOnClickListener(this);
         view.findViewById(R.id.btnPrevious).setOnClickListener(this);
     }
