@@ -6,6 +6,8 @@ package by.org.cgm.didyoufeelit.models;
  */
 public class Data {
 
-    public String date, time, place;
+    public String date;
+    public String time;
+    public String place;
 
 }
