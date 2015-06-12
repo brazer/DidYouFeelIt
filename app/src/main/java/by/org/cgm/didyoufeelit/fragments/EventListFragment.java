@@ -39,7 +39,7 @@ public class EventListFragment extends Fragment implements View.OnClickListener,
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String[] list = EventList.getInstance(getActivity()).getList();
+        String[] list = EventList.getInstance(getActivity().getApplicationContext()).getList();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
