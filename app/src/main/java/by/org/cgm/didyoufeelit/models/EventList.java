@@ -33,12 +33,48 @@ public class EventList {
         return eventList;
     }
 
+    public static EventList getInstance() {
+        return eventList;
+    }
+
     private EventList(Context c) {
         mContext = c;
     }
 
     public boolean isEmpty() {
         return getShakeEvents().size() == 0;
+    }
+
+    public int getDay(int position) {
+        String date = events.get(position).date;
+        return Integer.parseInt(getArrayDate(date)[0]);
+    }
+
+    public int getMonth(int position) {
+        String date = events.get(position).date;
+        return Integer.parseInt(getArrayDate(date)[1]);
+    }
+
+    public int getYear(int position) {
+        String date = events.get(position).date;
+        return Integer.parseInt(getArrayDate(date)[2]);
+    }
+
+    @NonNull private String[] getArrayDate(String date) {
+        date = date.split(" ")[0];
+        return date.split("\\.");
+    }
+
+    public int getHour(int position) {
+        String hour = events.get(position).time;
+        hour = hour.split(":")[0];
+        return Integer.parseInt(hour);
+    }
+
+    public int getMinute(int position) {
+        String minute = events.get(position).time;
+        minute = minute.split(":")[1];
+        return Integer.parseInt(minute);
     }
 
     public String[] getList() {

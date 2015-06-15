@@ -9,133 +9,63 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
-
 import by.org.cgm.didyoufeelit.R;
 import by.org.cgm.didyoufeelit.fragments.DateFragment;
-import by.org.cgm.didyoufeelit.fragments.MainFormFragment;
 import by.org.cgm.didyoufeelit.fragments.PlaceFragment;
 import by.org.cgm.didyoufeelit.fragments.TimeFragment;
 import by.org.cgm.didyoufeelit.listeners.OnNavigationListener;
-import by.org.cgm.didyoufeelit.utils.FragmentTags;
-import by.org.cgm.didyoufeelit.utils.FragmentUtils;
+import by.org.cgm.didyoufeelit.models.EventList;
 import by.org.cgm.didyoufeelit.utils.StringUtils;
 
 public class MainFormActivity extends AppCompatActivity
-    implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        OnNavigationListener, ViewPager.OnPageChangeListener,
-        MainFormFragment.OnPlacePickListener {
+    implements OnNavigationListener, ViewPager.OnPageChangeListener {
 
-    public static final int PLACE_PICKER_REQUEST = 1983;
-    private final String LOG_TAG = MainFormActivity.class.getSimpleName();
-    public final static String FRAG_ARG = "location";
-    private GoogleApiClient mGoogleApiClient;
+    @Deprecated public static final int PLACE_PICKER_REQUEST = 1983;
+    private static final String LOG_TAG = MainFormActivity.class.getSimpleName();
+    @Deprecated public final static String FRAG_ARG = "location";
+    private int mEventListPosition;
     private ViewPager mViewPager;
     private CustomPagerAdapter mAdapter;
     private int mCurrentPagePosition = 0;
+
+    static class Time {
+        public static int hour;
+        public static int minute;
+    }
+
+    static class Date {
+        public static int day;
+        public static int month;
+        public static int year;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_form);
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .enableAutoManage(this, 0, this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mAdapter = new CustomPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOnPageChangeListener(this);
-        //buildGoogleApiClient();
+        mViewPager.addOnPageChangeListener(this);
+        mEventListPosition = getEventListPosition();
+        if (mEventListPosition != -1) initData();
     }
 
-    private void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+    private int getEventListPosition() {
+        Intent intent = getIntent();
+        return intent.getIntExtra(StringUtils.EVENT_LIST_POSITION, -1);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mGoogleApiClient!=null) mGoogleApiClient.connect();
-    }
-
-    private void showMainFormFragment(String location) {
-        MainFormFragment fragment = new MainFormFragment();
-        Bundle arg = new Bundle();
-        arg.putString(FRAG_ARG, location);
-        fragment.setArguments(arg);
-        FragmentUtils.addFragment(this, R.id.main_form_container, fragment, FragmentTags.MAIN_FORM, false);
-    }
-
-    private void showMainFormFragment() {
-        MainFormFragment fragment = new MainFormFragment();
-        FragmentUtils.addFragment(this, R.id.main_form_container, fragment, FragmentTags.MAIN_FORM, false);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mGoogleApiClient!=null && mGoogleApiClient.isConnected())
-            mGoogleApiClient.disconnect();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        /*Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (lastLocation != null) {
-            double lat = lastLocation.getLatitude();
-            double lon = lastLocation.getLongitude();
-            String location = "Широта: " + StringUtils.round(lat, 2) +
-                    ", долгота: " + StringUtils.round(lon, 2);
-            showMainFormFragment(location);
-        } else showMainFormFragment();*/
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d(LOG_TAG, "onConnectionSuspended");
-        //showMainFormFragment();
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d(LOG_TAG, "onConnectionFailed");
-        //showMainFormFragment();
-    }
-
-    @Override
-    public void onPlacePick() {
-        if (mGoogleApiClient==null || !mGoogleApiClient.isConnected()) return;
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        try {
-            startActivityForResult(builder.build(getApplicationContext()), PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException e) {
-            Log.e(LOG_TAG, "GooglePlayServicesRepairableException thrown");
-        } catch (GooglePlayServicesNotAvailableException e) {
-            Log.e(LOG_TAG, "GooglePlayServicesNotAvailableException thrown");
+    private void initData() {
+        EventList eventList = EventList.getInstance();
+        if (eventList != null) {
+            Date.day = eventList.getDay(mEventListPosition);
+            Date.month = eventList.getMonth(mEventListPosition);
+            Date.year = eventList.getYear(mEventListPosition);
+            Time.hour = eventList.getHour(mEventListPosition);
+            Time.minute = eventList.getMinute(mEventListPosition);
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.MAIN_FORM);
-        if (fragment!=null) fragment.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -144,8 +74,15 @@ public class MainFormActivity extends AppCompatActivity
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    protected void onDestroy() {
+        super.onDestroy();
+        mViewPager.removeOnPageChangeListener(this);
+    }
 
+    public class PagePosition {
+        public static final int DATE = 0;
+        public static final int TIME = 1;
+        public static final int PLACE = 2;
     }
 
     @Override
@@ -164,22 +101,14 @@ public class MainFormActivity extends AppCompatActivity
         }
         mCurrentPagePosition = position;
     }
-
     @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-    public class PagePosition {
-        public static final int DATE = 0;
-        public static final int TIME = 1;
-        public static final int PLACE = 2;
-    }
+    public void onPageScrollStateChanged(int state) { }
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
     private class CustomPagerAdapter extends FragmentPagerAdapter {
 
         private final int NUM_PAGES = 3;
-
 
         public CustomPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -188,12 +117,22 @@ public class MainFormActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = null;
-            if (position== PagePosition.DATE) fragment = new DateFragment();
-            if (position== PagePosition.TIME) fragment = new TimeFragment();
-            if (position== PagePosition.PLACE) fragment = new PlaceFragment();
-            Bundle arg = new Bundle();
-            arg.putInt(StringUtils.PAGE_POSITION, position);
-            if (fragment != null) fragment.setArguments(arg);
+            Bundle args = new Bundle();
+            args.putInt(StringUtils.PAGE_POSITION, position);
+            if (position == PagePosition.DATE) {
+                fragment = new DateFragment();
+                if (mEventListPosition != -1) {
+                    args.putIntArray(StringUtils.DATE, new int[]{Date.day, Date.month, Date.year});
+                }
+            }
+            if (position == PagePosition.TIME) {
+                fragment = new TimeFragment();
+                if (mEventListPosition != -1) {
+                    args.putIntArray(StringUtils.TIME, new int[]{Time.hour, Time.minute});
+                }
+            }
+            if (position == PagePosition.PLACE) fragment = new PlaceFragment();
+            if (fragment != null) fragment.setArguments(args);
             return fragment;
         }
 
@@ -202,4 +141,5 @@ public class MainFormActivity extends AppCompatActivity
             return NUM_PAGES;
         }
     }
+
 }

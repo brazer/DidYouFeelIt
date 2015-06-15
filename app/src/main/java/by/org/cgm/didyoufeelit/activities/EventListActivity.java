@@ -3,7 +3,6 @@ package by.org.cgm.didyoufeelit.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,6 +13,7 @@ import by.org.cgm.didyoufeelit.preferences.AppPreferences;
 import by.org.cgm.didyoufeelit.utils.ActivityUtils;
 import by.org.cgm.didyoufeelit.utils.FragmentTags;
 import by.org.cgm.didyoufeelit.utils.FragmentUtils;
+import by.org.cgm.didyoufeelit.utils.StringUtils;
 
 public class EventListActivity extends AppCompatActivity
         implements EventListFragment.OnClickListener {
@@ -73,7 +73,9 @@ public class EventListActivity extends AppCompatActivity
 
     @Override
     public void onFormAndSendMessageClick(int position) {
-        //todo
-        Log.d(LOG_TAG, "onFormAndSendMessageClick: " + position);
+        Intent intent = new Intent(this, MainFormActivity.class);
+        intent.putExtra(StringUtils.EVENT_LIST_POSITION, position);
+        startActivity(intent);
     }
+
 }

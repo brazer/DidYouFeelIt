@@ -40,9 +40,18 @@ public class TimeFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         mTimePicker = (TimePicker) view.findViewById(R.id.timePicker);
         mTimePicker.setIs24HourView(true);
-        mTimePicker.setCurrentHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+        if (getArguments().containsKey(StringUtils.TIME)) initTime();
+        else {
+            mTimePicker.setCurrentHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+        }
         view.findViewById(R.id.btnNext).setOnClickListener(this);
         view.findViewById(R.id.btnPrevious).setOnClickListener(this);
+    }
+
+    private void initTime() {
+        int[] time = getArguments().getIntArray(StringUtils.TIME);
+        mTimePicker.setCurrentHour(time[0]);
+        mTimePicker.setCurrentMinute(time[1]);
     }
 
     @Override

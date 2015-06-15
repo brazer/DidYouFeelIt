@@ -21,7 +21,7 @@ import by.org.cgm.didyoufeelit.utils.StringUtils;
 public class DateFragment extends Fragment implements View.OnClickListener {
 
     private OnNavigationListener mListener;
-    private static DatePicker mDatePicker;
+    private DatePicker mDatePicker;
     private int position;
 
     @Override
@@ -36,7 +36,13 @@ public class DateFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);
+        if (getArguments().containsKey(StringUtils.DATE)) initDate();
         view.findViewById(R.id.btnNext).setOnClickListener(this);
+    }
+
+    private void initDate() {
+        int[] date = getArguments().getIntArray(StringUtils.DATE);
+        mDatePicker.updateDate(date[2], date[1], date[0]);
     }
 
     @Override

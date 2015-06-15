@@ -19,7 +19,7 @@ import by.org.cgm.didyoufeelit.dialogs.DatePicker;
 import by.org.cgm.didyoufeelit.dialogs.TimePicker;
 import by.org.cgm.didyoufeelit.utils.StringUtils;
 
-
+@Deprecated
 public class MainFormFragment extends Fragment
         implements View.OnClickListener, DatePicker.OnDatePickCompleteListener,
         TimePicker.OnTimePickCompleteListener {
