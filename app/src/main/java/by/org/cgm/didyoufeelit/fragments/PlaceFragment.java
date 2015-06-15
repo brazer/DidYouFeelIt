@@ -43,7 +43,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener,
         position = arg.getInt(StringUtils.PAGE_POSITION);
         if (savedInstanceState!=null) {
             double[] latlng = savedInstanceState.getDoubleArray(PLACE_KEY);
-            place = new LatLng(latlng[0], latlng[1]);
+            if (latlng != null) place = new LatLng(latlng[0], latlng[1]);
         }
         return inflater.inflate(R.layout.fragment_place, container, false);
     }
