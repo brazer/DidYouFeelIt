@@ -9,5 +9,6 @@ public class Data {
     public String date;
     public String time;
     public String place;
+    public String additionalInfo;
 
 }

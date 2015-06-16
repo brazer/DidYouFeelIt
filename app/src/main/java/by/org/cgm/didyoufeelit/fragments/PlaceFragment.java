@@ -96,8 +96,8 @@ public class PlaceFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnNext: //todo: create next fragment
-                //mListener.onNavigatePage(position + 1);
+            case R.id.btnNext:
+                mListener.onNavigatePage(position + 1);
                 break;
             case R.id.btnPrevious:
                 mListener.onNavigatePage(position - 1);

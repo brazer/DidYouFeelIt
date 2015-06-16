@@ -12,6 +12,7 @@ import android.util.Log;
 import by.org.cgm.didyoufeelit.R;
 import by.org.cgm.didyoufeelit.fragments.DateFragment;
 import by.org.cgm.didyoufeelit.fragments.PlaceFragment;
+import by.org.cgm.didyoufeelit.fragments.SummaryFragment;
 import by.org.cgm.didyoufeelit.fragments.TimeFragment;
 import by.org.cgm.didyoufeelit.listeners.OnNavigationListener;
 import by.org.cgm.didyoufeelit.models.EventList;
@@ -83,6 +84,7 @@ public class MainFormActivity extends AppCompatActivity
         public static final int DATE = 0;
         public static final int TIME = 1;
         public static final int PLACE = 2;
+        public static final int SUMMARY = 3;
     }
 
     @Override
@@ -108,7 +110,7 @@ public class MainFormActivity extends AppCompatActivity
 
     private class CustomPagerAdapter extends FragmentPagerAdapter {
 
-        private final int NUM_PAGES = 3;
+        private final int NUM_PAGES = 4;
 
         public CustomPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -119,19 +121,28 @@ public class MainFormActivity extends AppCompatActivity
             Fragment fragment = null;
             Bundle args = new Bundle();
             args.putInt(StringUtils.PAGE_POSITION, position);
-            if (position == PagePosition.DATE) {
-                fragment = new DateFragment();
-                if (mEventListPosition != -1) {
-                    args.putIntArray(StringUtils.DATE, new int[]{Date.day, Date.month, Date.year});
-                }
+            switch (position) {
+                case PagePosition.DATE:
+                    fragment = new DateFragment();
+                    if (mEventListPosition != -1) {
+                        args.putIntArray(StringUtils.DATE, new int[]{Date.day, Date.month, Date.year});
+                    }
+                    break;
+                case PagePosition.TIME:
+                    fragment = new TimeFragment();
+                    if (mEventListPosition != -1) {
+                        args.putIntArray(StringUtils.TIME, new int[]{Time.hour, Time.minute});
+                    }
+                    break;
+                case PagePosition.PLACE:
+                    fragment = new PlaceFragment();
+                    break;
+                case PagePosition.SUMMARY:
+                    fragment = new SummaryFragment();
+                    break;
+                default:
+                    Log.d(LOG_TAG, "Неправильный номер страницы");
             }
-            if (position == PagePosition.TIME) {
-                fragment = new TimeFragment();
-                if (mEventListPosition != -1) {
-                    args.putIntArray(StringUtils.TIME, new int[]{Time.hour, Time.minute});
-                }
-            }
-            if (position == PagePosition.PLACE) fragment = new PlaceFragment();
             if (fragment != null) fragment.setArguments(args);
             return fragment;
         }
