@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import by.org.cgm.didyoufeelit.R;
 import by.org.cgm.didyoufeelit.models.RegisteredUser;
@@ -59,6 +60,22 @@ public class RegFormFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId()==R.id.buttonReg) {
+            if (isEmpty(mEditTextFirst)) {
+                Toast.makeText(getActivity(), "Поле \"Имя\" пустое", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (isEmpty(mEditTextSecond)) {
+                Toast.makeText(getActivity(), "Поле \"Фамилия\" пустое", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (isEmpty(mEditTextPhone)) {
+                Toast.makeText(getActivity(), "Поле \"Телефон\" пустое", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (isEmpty(mEditTextEmail)) {
+                Toast.makeText(getActivity(), "Поле \"Email\" пустое", Toast.LENGTH_SHORT).show();
+                return;
+            }
             RegisteredUser user = new RegisteredUser();
             user.setFirstName(mEditTextFirst.getText().toString());
             user.setSecondName(mEditTextSecond.getText().toString());
@@ -66,5 +83,9 @@ public class RegFormFragment extends Fragment implements View.OnClickListener {
             user.setEmail(mEditTextEmail.getText().toString());
             mRegListener.OnRegistrationComplete(user);
         }
+    }
+
+    private boolean isEmpty(EditText text) {
+        return text.getText().toString().trim().length() == 0;
     }
 }
