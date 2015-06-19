@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import by.org.cgm.didyoufeelit.AppCache;
 import by.org.cgm.didyoufeelit.R;
 import by.org.cgm.didyoufeelit.SeismicService;
 import by.org.cgm.didyoufeelit.fragments.EventListFragment;
@@ -17,8 +18,6 @@ import by.org.cgm.didyoufeelit.utils.StringUtils;
 
 public class EventListActivity extends AppCompatActivity
         implements EventListFragment.OnClickListener {
-
-    private static final String LOG_TAG = EventListActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,7 @@ public class EventListActivity extends AppCompatActivity
                 AppPreferences.getInstance().getBoolean(getString(R.string.detector_enabled), true);
         if (detectorEnabled) startService(new Intent(getApplicationContext(), SeismicService.class));
         else stopService(new Intent(getApplicationContext(), SeismicService.class));
+        AppCache.getInstance().updateUser();
     }
 
     @Override

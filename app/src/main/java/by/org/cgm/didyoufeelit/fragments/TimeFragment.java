@@ -24,7 +24,7 @@ import by.org.cgm.didyoufeelit.utils.StringUtils;
 public class TimeFragment extends Fragment implements View.OnClickListener {
 
     private OnNavigationListener mListener;
-    private TimePicker mTimePicker;
+    private static TimePicker mTimePicker;
     private int position;
 
     @Override
@@ -89,6 +89,7 @@ public class TimeFragment extends Fragment implements View.OnClickListener {
             int hour = mTimePicker.getCurrentHour();
             AppCache.getInstance().getData().time =
                     StringUtils.getDoubleDigits(hour) + ":" + StringUtils.getDoubleDigits(minute);
+            mTimePicker = null;
         } catch (NullPointerException e) {
             Log.e(FragmentTags.TIME, e.toString());
         }

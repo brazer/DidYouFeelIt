@@ -33,7 +33,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener,
     private static final String PLACE_KEY = "lat_lng";
     private OnNavigationListener mListener;
     private int position;
-    private LatLng place;
+    private static LatLng place;
     private SupportMapFragment mapFragment;
 
     @Override
@@ -128,9 +128,10 @@ public class PlaceFragment extends Fragment implements View.OnClickListener,
     }
 
     public void setPlaceInData() {
-        if (place!=null)
+        if (place != null) {
             AppCache.getInstance().getData().place =
-                    "Долгота: " + place.longitude + ", широта: " + place.latitude;
-
+                    "  долгота: " + StringUtils.round(place.longitude, 2) + ",\n" +
+                    "  широта: " + StringUtils.round(place.latitude, 2);
+        }
     }
 }

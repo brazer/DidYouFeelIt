@@ -8,22 +8,26 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import by.org.cgm.didyoufeelit.AppCache;
 import by.org.cgm.didyoufeelit.R;
+import by.org.cgm.didyoufeelit.SeismicService;
 import by.org.cgm.didyoufeelit.fragments.DateFragment;
 import by.org.cgm.didyoufeelit.fragments.PlaceFragment;
 import by.org.cgm.didyoufeelit.fragments.SummaryFragment;
 import by.org.cgm.didyoufeelit.fragments.TimeFragment;
 import by.org.cgm.didyoufeelit.listeners.OnNavigationListener;
 import by.org.cgm.didyoufeelit.models.EventList;
+import by.org.cgm.didyoufeelit.preferences.AppPreferences;
+import by.org.cgm.didyoufeelit.utils.ActivityUtils;
 import by.org.cgm.didyoufeelit.utils.StringUtils;
 
 public class MainFormActivity extends AppCompatActivity
     implements OnNavigationListener, ViewPager.OnPageChangeListener {
 
-    @Deprecated public static final int PLACE_PICKER_REQUEST = 1983;
     private static final String LOG_TAG = MainFormActivity.class.getSimpleName();
-    @Deprecated public final static String FRAG_ARG = "location";
     private int mEventListPosition;
     private ViewPager mViewPager;
     private CustomPagerAdapter mAdapter;
@@ -70,6 +74,39 @@ public class MainFormActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        boolean detectorEnabled =
+                AppPreferences.getInstance().getBoolean(getString(R.string.detector_enabled), true);
+        if (detectorEnabled) startService(new Intent(getApplicationContext(), SeismicService.class));
+        else stopService(new Intent(getApplicationContext(), SeismicService.class));
+        AppCache.getInstance().updateUser();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_event_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            ActivityUtils.startNewActivity(this, SettingsActivity.class);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onNavigatePage(int position) {
         mViewPager.setCurrentItem(position, true);
     }
@@ -99,6 +136,7 @@ public class MainFormActivity extends AppCompatActivity
                 break;
             case PagePosition.PLACE:
                 ((PlaceFragment) mAdapter.getItem(PagePosition.PLACE)).setPlaceInData();
+                ((SummaryFragment) mAdapter.getItem(PagePosition.SUMMARY)).updateMessage();
                 break;
         }
         mCurrentPagePosition = position;

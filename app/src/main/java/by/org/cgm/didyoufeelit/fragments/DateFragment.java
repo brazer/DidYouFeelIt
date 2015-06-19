@@ -21,7 +21,7 @@ import by.org.cgm.didyoufeelit.utils.StringUtils;
 public class DateFragment extends Fragment implements View.OnClickListener {
 
     private OnNavigationListener mListener;
-    private DatePicker mDatePicker;
+    private static DatePicker mDatePicker;
     private int position;
 
     @Override
@@ -80,6 +80,7 @@ public class DateFragment extends Fragment implements View.OnClickListener {
                     StringUtils.getDoubleDigits(day) + "."
                             + StringUtils.getDoubleDigits(month) + "."
                             + year + " г.";
+            mDatePicker = null;
         } catch (NullPointerException e) {
             Log.e(FragmentTags.DATE, e.toString());
         }
