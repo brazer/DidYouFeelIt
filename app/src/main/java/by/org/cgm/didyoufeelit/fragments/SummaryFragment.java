@@ -1,6 +1,8 @@
 package by.org.cgm.didyoufeelit.fragments;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import by.org.cgm.didyoufeelit.AppCache;
 import by.org.cgm.didyoufeelit.R;
+import by.org.cgm.didyoufeelit.activities.MainFormActivity;
 import by.org.cgm.didyoufeelit.listeners.OnNavigationListener;
 import by.org.cgm.didyoufeelit.models.Data;
 import by.org.cgm.didyoufeelit.models.RegisteredUser;
@@ -39,7 +43,8 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         initViews(view);
-        view.setOnClickListener(this);
+        view.findViewById(R.id.btnPrevious).setOnClickListener(this);
+        view.findViewById(R.id.btnSend).setOnClickListener(this);
     }
 
     private void initViews(View view) {
@@ -79,6 +84,29 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
             case R.id.btnPrevious:
                 mListener.onNavigatePage(position - 1);
                 break;
+            case R.id.btnSend:
+                sendMessage();
+                break;
+        }
+    }
+
+    private void sendMessage() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{StringUtils.EMAIL_CGM});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Сообщение о сейсмическом событии");
+        intent.putExtra(Intent.EXTRA_TEXT, mMessage.getText());
+        try {
+            startActivityForResult(
+                    Intent.createChooser(intent, "Отправка почты..."),
+                    MainFormActivity.EMAIL_REQUEST_CODE
+            );
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(
+                    getActivity(),
+                    "В устройстве не установлен ни один почтовый клиент",
+                    Toast.LENGTH_LONG
+            ).show();
         }
     }
 

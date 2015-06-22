@@ -32,6 +32,7 @@ public class MainFormActivity extends AppCompatActivity
     private ViewPager mViewPager;
     private CustomPagerAdapter mAdapter;
     private int mCurrentPagePosition = 0;
+    public static int EMAIL_REQUEST_CODE = 1;
 
     static class Time {
         public static int hour;

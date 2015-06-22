@@ -12,6 +12,7 @@ public class StringUtils {
     public static final String EVENT_LIST_POSITION = "position";
     public static final String TIME = "time";
     public static final String DATE = "date";
+    public static final String EMAIL_CGM = "salanevich@cgm.org.by";
 
     public static String round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
