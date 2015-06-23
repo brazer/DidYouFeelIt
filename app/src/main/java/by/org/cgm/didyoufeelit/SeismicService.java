@@ -1,10 +1,13 @@
 package by.org.cgm.didyoufeelit;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import by.org.cgm.didyoufeelit.activities.EventListActivity;
 import by.org.cgm.didyoufeelit.preferences.AppPreferences;
 import by.org.cgm.didyoufeelit.utils.StringUtils;
 import by.org.cgm.seismic.ShakeDetector;
@@ -65,8 +69,10 @@ public class SeismicService extends Service implements ShakeDetector.Listener {
         writeJson(convertToJson(events), StringUtils.EVENTS_FILE);
         boolean notificationEnabled =
                 AppPreferences.getInstance().getBoolean(getString(R.string.notification_enabled), false);
-        if (notificationEnabled) //todo: push notification
+        if (notificationEnabled) {
             Toast.makeText(this, "Зафиксированы толчки", Toast.LENGTH_SHORT).show();
+            showNotification(event);
+        }
     }
 
     private String getDate(Calendar c) {
@@ -116,6 +122,23 @@ public class SeismicService extends Service implements ShakeDetector.Listener {
 
     private String convertToJson(ArrayList<ShakeEvent> events) {
         return gson.toJson(events, collectionType);
+    }
+
+    private void showNotification(ShakeEvent event) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.electrical_sensor)
+                .setContentTitle("Зафиксированы толчки")
+                .setContentText(event.date + " " + event.time);
+        Intent resultIntent = new Intent(this, EventListActivity.class);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                resultIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        builder.setContentIntent(resultPendingIntent);
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.notify(1, builder.build());
     }
 
     public class ShakeEvent {
