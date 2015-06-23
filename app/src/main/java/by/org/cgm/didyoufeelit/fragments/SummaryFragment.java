@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import by.org.cgm.didyoufeelit.AppCache;
 import by.org.cgm.didyoufeelit.R;
-import by.org.cgm.didyoufeelit.activities.MainFormActivity;
 import by.org.cgm.didyoufeelit.listeners.OnNavigationListener;
 import by.org.cgm.didyoufeelit.models.Data;
 import by.org.cgm.didyoufeelit.models.RegisteredUser;
@@ -97,10 +96,7 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
         intent.putExtra(Intent.EXTRA_SUBJECT, "Сообщение о сейсмическом событии");
         intent.putExtra(Intent.EXTRA_TEXT, mMessage.getText());
         try {
-            startActivityForResult(
-                    Intent.createChooser(intent, "Отправка почты..."),
-                    MainFormActivity.EMAIL_REQUEST_CODE
-            );
+            startActivityForResult(Intent.createChooser(intent, "Отправка почты..."), 0);
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(
                     getActivity(),

@@ -23,24 +23,30 @@ public class EventListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
-
-        FragmentUtils.addFragment(
-                this,
-                R.id.event_list_container,
-                new EventListFragment(),
-                FragmentTags.EVENT_LIST,
-                false
-        );
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        service();
+        AppCache.getInstance().updateUser();
+        showEventListFragment();
+    }
+
+    private void service() {
         boolean detectorEnabled =
                 AppPreferences.getInstance().getBoolean(getString(R.string.detector_enabled), true);
         if (detectorEnabled) startService(new Intent(getApplicationContext(), SeismicService.class));
         else stopService(new Intent(getApplicationContext(), SeismicService.class));
-        AppCache.getInstance().updateUser();
+    }
+
+    private void showEventListFragment() {
+        FragmentUtils.replaceContent(
+                this,
+                R.id.event_list_container,
+                new EventListFragment(),
+                FragmentTags.EVENT_LIST
+        );
     }
 
     @Override

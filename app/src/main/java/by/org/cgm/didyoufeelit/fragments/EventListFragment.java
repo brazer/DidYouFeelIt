@@ -23,10 +23,12 @@ public class EventListFragment extends Fragment implements View.OnClickListener,
         ListView.OnItemClickListener {
 
     private OnClickListener mListener;
+    private String[] mList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mList = EventList.getInstance(getActivity().getApplicationContext()).getList();
     }
 
     @Override
@@ -39,11 +41,10 @@ public class EventListFragment extends Fragment implements View.OnClickListener,
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String[] list = EventList.getInstance(getActivity().getApplicationContext()).getList();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
-                list
+                mList
         );
         ListView listView = (ListView) view.findViewById(R.id.listView);
         listView.setAdapter(adapter);
