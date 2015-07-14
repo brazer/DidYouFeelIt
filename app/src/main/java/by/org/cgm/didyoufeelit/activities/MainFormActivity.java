@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import by.org.cgm.didyoufeelit.AppCache;
 import by.org.cgm.didyoufeelit.R;
@@ -127,7 +126,6 @@ public class MainFormActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Toast.makeText(this, "Почта отправлена", Toast.LENGTH_SHORT).show();
         finish();
     }
 

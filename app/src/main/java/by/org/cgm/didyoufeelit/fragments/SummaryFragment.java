@@ -96,7 +96,7 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
         intent.putExtra(Intent.EXTRA_SUBJECT, "Сообщение о сейсмическом событии");
         intent.putExtra(Intent.EXTRA_TEXT, mMessage.getText());
         try {
-            startActivityForResult(Intent.createChooser(intent, "Отправка почты..."), 0);
+            startActivityForResult(Intent.createChooser(intent, "Отправка сообщения..."), 0);
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(
                     getActivity(),
