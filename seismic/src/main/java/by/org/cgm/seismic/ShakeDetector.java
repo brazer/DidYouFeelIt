@@ -22,7 +22,7 @@ public class ShakeDetector implements SensorEventListener {
      * When the magnitude of total acceleration exceeds this
      * value, the phone is accelerating.
      */
-    private static final int ACCELERATION_THRESHOLD = 13;
+    private static int sAccelerationThreshold = 13;
 
     /** Listens for shakes. */
     public interface Listener {
@@ -38,6 +38,10 @@ public class ShakeDetector implements SensorEventListener {
 
     public ShakeDetector(Listener listener) {
         this.listener = listener;
+    }
+
+    public static void setAccelerationThreshold(int accelerationThreshold) {
+        sAccelerationThreshold = accelerationThreshold;
     }
 
     /**
@@ -92,11 +96,11 @@ public class ShakeDetector implements SensorEventListener {
         float ay = event.values[1];
         float az = event.values[2];
 
-        // Instead of comparing magnitude to ACCELERATION_THRESHOLD,
+        // Instead of comparing magnitude to sAccelerationThreshold,
         // compare their squares. This is equivalent and doesn't need the
         // actual magnitude, which would be computed using (expesive) Math.sqrt().
         final double magnitudeSquared = ax * ax + ay * ay + az * az;
-        return magnitudeSquared > ACCELERATION_THRESHOLD * ACCELERATION_THRESHOLD;
+        return magnitudeSquared > sAccelerationThreshold * sAccelerationThreshold;
     }
 
     @Override
@@ -107,7 +111,7 @@ public class ShakeDetector implements SensorEventListener {
         /** Time sample was taken. */
         public long timestamp;
 
-        /** If acceleration > {@link #ACCELERATION_THRESHOLD}. */
+        /** If acceleration > {@link #sAccelerationThreshold}. */
         public boolean accelerating;
 
         /** Next sample in the queue or pool. */
@@ -139,7 +143,7 @@ public class ShakeDetector implements SensorEventListener {
          * Adds a sample.
          *
          * @param timestamp    in nanoseconds of sample
-         * @param accelerating true if > {@link #ACCELERATION_THRESHOLD}.
+         * @param accelerating true if > {@link #sAccelerationThreshold}.
          */
         public void add(long timestamp, boolean accelerating) {
             // Purge samples that proceed window.
