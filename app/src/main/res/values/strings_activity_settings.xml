@@ -11,6 +11,9 @@
     <string name="pref_title_detector_notification">Включить сообщения</string>
     <string name="pref_description_detector_notification">
         Установить флажок, чтобы получать сообщение о новом событии</string>
+    
+    <string name="pref_title_detector_sensitivity">Чувствительность детектора</string>
+    <string name="pref_default_detector_sensitivity">13</string>
 
     <!-- Settings for User -->
     <string name="pref_header_user">Данные пользователя</string>

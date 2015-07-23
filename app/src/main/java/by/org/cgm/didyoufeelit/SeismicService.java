@@ -87,6 +87,10 @@ public class SeismicService extends Service implements ShakeDetector.Listener {
                 StringUtils.getDoubleDigits(c.get(Calendar.SECOND));
     }
 
+    public static void setSensetivity(int value) {
+        ShakeDetector.setAccelerationThreshold(value);
+    }
+
     public ArrayList<ShakeEvent> getEvents() {
         return getEvents(readJson(StringUtils.EVENTS_FILE));
     }

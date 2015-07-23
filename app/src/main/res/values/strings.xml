@@ -8,12 +8,12 @@
     <string name="pick_place_fragment">Укажите место события</string>
     <string name="title_activity_event_list">Список событий</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="detector_enabled">detector_checkbox</string>
-    <string name="notification_enabled">notification_checkbox</string>
-    <string name="first_name">first_name</string>
-    <string name="second_name">second_name</string>
-    <string name="phone">phone</string>
-    <string name="email">email</string>
+    <string name="detector_enabled" translatable="false">detector_checkbox</string>
+    <string name="notification_enabled" translatable="false">notification_checkbox</string>
+    <string name="detector_sensitivity" translatable="false">sensitivity</string>
+    <string name="first_name" translatable="false">first_name</string>
+    <string name="second_name" translatable="false">second_name</string>
+    <string name="phone" translatable="false">phone</string>
+    <string name="email" translatable="false">email</string>
 
 </resources>
