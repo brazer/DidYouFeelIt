@@ -13,7 +13,7 @@
         Установить флажок, чтобы получать сообщение о новом событии</string>
     
     <string name="pref_title_detector_sensitivity">Чувствительность детектора</string>
-    <string name="pref_default_detector_sensitivity">13</string>
+    <string name="pref_default_detector_sensitivity">50</string>
 
     <!-- Settings for User -->
     <string name="pref_header_user">Данные пользователя</string>

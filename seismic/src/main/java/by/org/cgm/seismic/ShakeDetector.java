@@ -18,6 +18,7 @@ import java.util.List;
  */
 public class ShakeDetector implements SensorEventListener {
 
+    public static int MAX_ACCELERATION_THRESHOLD = 100;
     /**
      * When the magnitude of total acceleration exceeds this
      * value, the phone is accelerating.

@@ -35,6 +35,10 @@ public class AppPreferences {
         mEditor.commit();
     }
 
+    public int getInt(final String key, final int defVal) {
+        return mPreferences.getInt(key, defVal);
+    }
+
     public boolean getBoolean(final String key, final boolean defVal) {
         return mPreferences.getBoolean(key, defVal);
     }

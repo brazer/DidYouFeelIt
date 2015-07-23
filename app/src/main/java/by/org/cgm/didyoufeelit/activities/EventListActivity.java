@@ -15,6 +15,7 @@ import by.org.cgm.didyoufeelit.utils.ActivityUtils;
 import by.org.cgm.didyoufeelit.utils.FragmentTags;
 import by.org.cgm.didyoufeelit.utils.FragmentUtils;
 import by.org.cgm.didyoufeelit.utils.StringUtils;
+import by.org.cgm.seismic.ShakeDetector;
 
 public class EventListActivity extends AppCompatActivity
         implements EventListFragment.OnClickListener {
@@ -38,6 +39,12 @@ public class EventListActivity extends AppCompatActivity
                 AppPreferences.getInstance().getBoolean(getString(R.string.detector_enabled), true);
         if (detectorEnabled) startService(new Intent(getApplicationContext(), SeismicService.class));
         else stopService(new Intent(getApplicationContext(), SeismicService.class));
+        int sensitivity = AppPreferences.getInstance().getInt(
+                getString(R.string.detector_sensitivity),
+                Integer.parseInt(getString(R.string.pref_default_detector_sensitivity))
+        );
+        sensitivity = Math.round((100 - sensitivity)*ShakeDetector.MAX_ACCELERATION_THRESHOLD/100);
+        SeismicService.setSensitivity(sensitivity);
     }
 
     private void showEventListFragment() {

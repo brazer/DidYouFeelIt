@@ -23,6 +23,7 @@ import by.org.cgm.didyoufeelit.models.EventList;
 import by.org.cgm.didyoufeelit.preferences.AppPreferences;
 import by.org.cgm.didyoufeelit.utils.ActivityUtils;
 import by.org.cgm.didyoufeelit.utils.StringUtils;
+import by.org.cgm.seismic.ShakeDetector;
 
 public class MainFormActivity extends AppCompatActivity
     implements OnNavigationListener, ViewPager.OnPageChangeListener {
@@ -81,6 +82,12 @@ public class MainFormActivity extends AppCompatActivity
         if (detectorEnabled) startService(new Intent(getApplicationContext(), SeismicService.class));
         else stopService(new Intent(getApplicationContext(), SeismicService.class));
         AppCache.getInstance().updateUser();
+        int sensitivity = AppPreferences.getInstance().getInt(
+                getString(R.string.detector_sensitivity),
+                Integer.parseInt(getString(R.string.pref_default_detector_sensitivity))
+        );
+        sensitivity = Math.round((100 - sensitivity)* ShakeDetector.MAX_ACCELERATION_THRESHOLD/100);
+        SeismicService.setSensitivity(sensitivity);
     }
 
     @Override
